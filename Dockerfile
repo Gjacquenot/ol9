@@ -1,6 +1,8 @@
 # FROM oraclelinux:9
 # FROM oraclelinux@sha256:db7bef5906849304bf7a94ae73026c12425fa0c3d2a788166117d453198452c2
-FROM oraclelinux@sha256:b9b54175913fa45da8cf7c652ad57873608d5bd87288d9d6f1776c8073c66370
+# FROM oraclelinux@sha256:b9b54175913fa45da8cf7c652ad57873608d5bd87288d9d6f1776c8073c66370
+FROM oraclelinux@sha256:e6713cc3bd51b5f4a3edc2497be8aec1884afba8cfaee1f65ea4077535cda9f1
+
 
 RUN yum update -y \
  && yum install -y \
@@ -23,6 +25,23 @@ RUN yum update -y \
     zlib-static \
     ninja-build
 
+RUN yum install -y rpmdevtools rpm-build rpm-sign
+
+# Install system dependencies
+RUN dnf install -y \
+   gcc \
+   gcc-c++ \
+   make \
+   cmake \
+   python3 \
+   python3-devel \
+   python3-pip \
+ && dnf clean all \
+ && pip3 install --upgrade pip \
+ && pip3 install pybind11==2.13.6
+
+RUN python3 -c "import pybind11; print(pybind11.get_cmake_dir())"
+
 # BOOST 1.60
 # DyNaMHoWebsocket uses SSC that relies on the following boost libraries: system thread random chrono
 # libbz2 is required for Boost compilation
@@ -43,12 +62,6 @@ RUN git clone https://github.com/boostorg/geometry \
  && cp -rf include/boost/geometry/extensions /opt/boost/include/boost/geometry/. \
  && cd .. \
  && rm -rf geometry
-
-RUN mkdir -p /opt/cmake  \
- && wget https://cmake.org/files/v3.19/cmake-3.19.2-Linux-x86_64.sh -O cmake.sh \
- && sh ./cmake.sh --exclude-subdir --prefix=/opt/cmake \
- && rm -rf cmake.sh
-ENV PATH="/opt/cmake/bin:${PATH}"
 
 RUN wget https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz -O eigen.tgz \
  && mkdir -p /opt/eigen \
@@ -215,21 +228,3 @@ RUN git clone --recursive https://github.com/yuki-koyama/mathtoolbox \
  && make install \
  && cd ..  \
  && rm -rf mathtoolbox mathtoolbox_build
-
-RUN yum install -y rpmdevtools rpm-build rpm-sign
-RUN yum install -y python3 python3-dev
-
-# Install system dependencies
-RUN dnf install -y \
-    gcc \
-    gcc-c++ \
-    make \
-    cmake \
-    python3 \
-    python3-devel \
-    python3-pip \
- && dnf clean all \
- && pip3 install --upgrade pip \
- && pip3 install pybind11==2.13.6
-
- RUN python3 -c "import pybind11; print(pybind11.get_cmake_dir())"
