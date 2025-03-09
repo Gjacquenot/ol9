@@ -215,3 +215,21 @@ RUN git clone --recursive https://github.com/yuki-koyama/mathtoolbox \
  && make install \
  && cd ..  \
  && rm -rf mathtoolbox mathtoolbox_build
+
+RUN yum install -y rpmdevtools rpm-build rpm-sign
+RUN yum install -y python3 python3-dev
+
+# Install system dependencies
+RUN dnf install -y \
+    gcc \
+    gcc-c++ \
+    make \
+    cmake \
+    python3 \
+    python3-devel \
+    python3-pip \
+ && dnf clean all \
+ && pip3 install --upgrade pip \
+ && pip3 install pybind11==2.13.6
+
+ RUN python3 -c "import pybind11; print(pybind11.get_cmake_dir())"
