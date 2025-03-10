@@ -33,6 +33,7 @@ RUN dnf install -y \
    python3 \
    python3-devel \
    python3-pip \
+   python3-numpy \
  && dnf clean all \
  && pip3 install --upgrade pip \
  && pip3 install pybind11[global]==2.13.6
