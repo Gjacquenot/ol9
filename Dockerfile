@@ -3,11 +3,11 @@
 # FROM oraclelinux@sha256:b9b54175913fa45da8cf7c652ad57873608d5bd87288d9d6f1776c8073c66370
 FROM oraclelinux@sha256:e6713cc3bd51b5f4a3edc2497be8aec1884afba8cfaee1f65ea4077535cda9f1
 
-
 RUN yum update -y \
  && yum install -y \
     bzip2 \
     bzip2-devel \
+    cmake \
     file \
     gcc \
     gcc-c++ \
@@ -23,22 +23,21 @@ RUN yum update -y \
  && yum install -y \
     libstdc++-static \
     zlib-static \
-    ninja-build
+    ninja-build \
+ && yum install -y rpmdevtools rpm-build rpm-sign
 
-RUN yum install -y rpmdevtools rpm-build rpm-sign
-
-# Install Python and pybind11
 RUN dnf install -y \
-   cmake \
-   python3 \
-   python3-devel \
-   python3-pip \
-   python3-numpy \
+    python3 \
+    python3-devel \
+    python3-pip \
+    python3-numpy \
+    python3-setuptools \
+    python3-wheel \
  && dnf clean all \
  && pip3 install --upgrade pip \
  && pip3 install pybind11[global]==2.13.6
 
-RUN python3 -c "import pybind11; print(pybind11.get_cmake_dir())"
+# RUN python3 -c "import pybind11; print(pybind11.get_cmake_dir())"
 
 # BOOST 1.60
 # DyNaMHoWebsocket uses SSC that relies on the following boost libraries: system thread random chrono
