@@ -28,7 +28,7 @@ jobs:
 
       # Define image name
       - name: Set up image name
-        run: echo "IMAGE_NAME=${{ secrets.DOCKERHUB_USERNAME }}/oracle9-pybind11" >> $GITHUB_ENV
+        run: echo "IMAGE_NAME=sirehna/base-image-oracle9-gcc11:2025-03-10" >> $GITHUB_ENV
 
       # Build and push Docker image
       - name: Build and push Docker image
