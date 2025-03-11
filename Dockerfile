@@ -24,9 +24,11 @@ RUN yum update -y \
     libstdc++-static \
     zlib-static \
     ninja-build \
- && yum install -y rpmdevtools rpm-build rpm-sign
-
-RUN dnf install -y \
+ && yum install -y \
+    rpmdevtools \
+    rpm-build \
+    rpm-sign \
+ && dnf install -y \
     python3 \
     python3-devel \
     python3-pip \
