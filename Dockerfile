@@ -227,3 +227,5 @@ RUN git clone --recursive https://github.com/yuki-koyama/mathtoolbox \
  && make install \
  && cd ..  \
  && rm -rf mathtoolbox mathtoolbox_build
+
+RUN git clone --recursive https://gitlab.com/sirehna_naval_group/sirehna/xdyn.git /xdyn
