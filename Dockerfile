@@ -228,4 +228,4 @@ RUN git clone --recursive https://github.com/yuki-koyama/mathtoolbox \
  && cd ..  \
  && rm -rf mathtoolbox mathtoolbox_build
 
-RUN git clone --recursive https://gitlab.com/sirehna_naval_group/sirehna/xdyn.git /xdyn
+RUN wget https://www.vtk.org/files/release/9.4/VTK-9.4.2.tar.gz -O /vtk_9_4_2.tar.gz
